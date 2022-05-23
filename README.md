@@ -4,3 +4,4 @@
 "command": "remove-unexpected-variable.rmjsvar",
 window 快捷键： "ctrl+5",
 mac    快捷键: "cmd+5"
+test

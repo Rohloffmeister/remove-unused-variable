@@ -24,11 +24,13 @@ module.exports = function () {
         // enable jsx and flow syntax
         "jsx",
         "flow",
+        "decorators-legacy",
+        "decoratorsBeforeExport"
       ],
   });
 
   traverse(ast, {
-    VariableDeclaration(path) {
+    VariableDeclaration(path) { // decorators
       const { node } = path;
       const { declarations } = node;
       node.declarations = declarations.filter((declaration) => {
