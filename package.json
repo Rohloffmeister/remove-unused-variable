@@ -3,7 +3,7 @@
   "displayName": "remove_unused_variable",
   "description": "删除js，jsx中未引用的变量",
   "publisher": "boyq",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "engines": {
     "vscode": "^1.67.0"
   },
