@@ -31,13 +31,6 @@ module.exports = function () {
     VariableDeclaration(path) {
       const { node } = path;
       const { declarations } = node;
-      // console.log('declarations', JSON.stringify(declarations))
-  
-      // fs.writeFile('./test_res.js',  generate(ast).code, ()=> {
-      //   console.log('success')
-      // })
-  
-  
       node.declarations = declarations.filter((declaration) => {
         const { id } = declaration;
   
@@ -127,7 +120,7 @@ module.exports = function () {
         new vscode.Position(0, 0),
         new vscode.Position(activeTextEditor.document.lineCount + 1, 0)
       ),
-      generate(ast, {retainLines: true}).code
+      generate(ast, {retainLines: true, retainFunctionParens: true}).code
     );
   });
 };

@@ -3,15 +3,15 @@
   "displayName": "remove_unused_variable",
   "description": "删除js，jsx中未引用的变量",
   "publisher": "boyq",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "engines": {
     "vscode": "^1.67.0"
   },
-  "license": "SEE LICENSE IN LICENSE.txt",
   "bugs": {
     "url": "https://github.com/xiaoboyq/remove-unused-variable.gitissues",
-    "email": "sean@contoso.com"
+    "email": "1145389553@qq.com"
   },
+  "icon": "images/logo.jpeg",
   "repository": {
     "type": "git",
     "url": "https://github.com/xiaoboyq/remove-unused-variable.git"
