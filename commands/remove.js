@@ -107,11 +107,48 @@ module.exports = function () {
     },
     FunctionDeclaration(path) {
       const { node } = path;
-      const { id } = node;
+      const { id, params = [] } = node; // 获取id和参数
+      let paramsList = [...params] 
+      for(let i =  params.length - 1; i >= 0; i--) { // 函数的参数从最后一位起 如果没有引用则去除， 如果有引用，跳出循环
+        let paramsId= params[i];
+        const paramsBinding = path.scope.getBinding(paramsId.name);
+        if(!paramsBinding.referenced) {
+          paramsList.pop()
+        } else {
+          break
+        }
+        node.params = paramsList
+      }
+      
       const binding = path.scope.getBinding(id.name);
-      // if(!binding) return undefined
       if (!binding.referenced) {
         path.remove();
+      }
+    },
+    // FunctionDeclaration(path) {
+    //   const { node } = path;
+    //   const { id } = node;
+    //   const binding = path.scope.getBinding(id.name);
+    //   // if(!binding) return undefined
+    //   if (!binding.referenced) {
+    //     path.remove();
+    //   }
+    // },
+    // 箭头函数进行处理， 定义的变量赋值箭头时， 箭头函数和变量都会编译
+    ArrowFunctionExpression(path) { //
+      const { node } = path;
+      const { params = [] } = node;
+      let paramsList = [...params]
+      for(let i =  params.length - 1; i >= 0; i--) {
+        let paramsId= params[i];
+  
+        const paramsBinding = path.scope.getBinding(paramsId.name);
+        if(!paramsBinding.referenced) {
+          paramsList.pop()
+        } else {
+          break
+        }
+        node.params = paramsList
       }
     },
   });
