@@ -29,6 +29,8 @@ module.exports = function () {
     ],
   });
 
+
+  // 处理函数参数
   function getParamsList(path) {
     const { node } = path;
     const { params = [] } = node;
@@ -63,17 +65,16 @@ module.exports = function () {
   }
 
   traverse(ast, {
-    VariableDeclaration(path) { // decorators
+    VariableDeclaration(path) { // 变量
       const { node } = path;
       const { declarations } = node;
       node.declarations = declarations.filter((declaration) => {
         const { id } = declaration;
-
         if (t.isObjectPattern(id)) {
           // path.scope.getBinding(name).referenced 判断变量是否被引用
           // 通过filter移除掉没有使用的变量
           id.properties = id.properties.filter((property) => {
-            const binding = path.scope.getBinding(property.key.name);
+            const binding = path.scope.getBinding(property.value.name);
             if (!binding) return undefined
             // referenced 变量是否被引用
             // constantViolations 变量被重新定义的地方
@@ -88,7 +89,7 @@ module.exports = function () {
           });
           // 如果对象中所有变量都没有被应用，则该对象整个移除
           return id.properties.length > 0;
-        } else if (t.isArrayPattern(id)) { // 如果是解构形式的数组定义  react中 useState中的定义
+        } else if (t.isArrayPattern(id)) { // 如果是解构形式的数组定义  例如 react中 useState这样的定义
           const res = []
           id.elements.forEach(v => {
             const binding = path.scope.getBinding(v.name);
@@ -102,7 +103,6 @@ module.exports = function () {
           id.elements = res; // 重新赋值新的数组
           return res.length;
         } else {
-          //  fs.writeFile('./declarations.json', id, ()=> {})
           const binding = path.scope.getBinding(id.name);
           if (!binding) return undefined
           const { referenced, constantViolations } = binding;
@@ -120,12 +120,9 @@ module.exports = function () {
       }
     },
 
-    // How to get the version of react?
-    // How to  save the file after runned the commant ?
     ImportDeclaration(path) {
       const { node } = path;
       const { specifiers } = node;
-      // throw Error(JSON.stringify(path))
       if (!specifiers.length) return;
 
       node.specifiers = specifiers.filter((specifier) => {
@@ -166,7 +163,7 @@ module.exports = function () {
 
   activeTextEditor.edit((editBuilder) => {
     editBuilder.replace(
-      new vscode.Range(
+      new vscode.Range( // 来获取所要替换的区域
         new vscode.Position(0, 0),
         new vscode.Position(activeTextEditor.document.lineCount + 1, 0)
       ),
