@@ -74,7 +74,7 @@ module.exports = function () {
           // path.scope.getBinding(name).referenced 判断变量是否被引用
           // 通过filter移除掉没有使用的变量
           id.properties = id.properties.filter((property) => {
-            const binding = path.scope.getBinding(property.value.name);
+            const binding = path.scope.getBinding(property.value.name || property.key.name);
             if (!binding) return undefined
             // referenced 变量是否被引用
             // constantViolations 变量被重新定义的地方
